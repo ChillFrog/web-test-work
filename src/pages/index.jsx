@@ -1,15 +1,15 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import Image from "next/image";
-import { Inter } from "@next/font/google";
+import { Inter, Rowdies } from "@next/font/google";
 import { HiOutlineChevronUpDown } from "react-icons/hi2";
 import useAxios from "../pages/api/useAxios";
 import axios from "axios";
 import { rowData } from "./api/rawData.js";
-import DataForm from "../../components/DataForm";
+import DataForm from "../components/DataForm";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function Home() {
+export default function Home({}) {
   const [isFrom, setIsFrom] = useState(false);
   const [isTo, setIsTo] = useState(false);
   const [fromForm, setFromForm] = useState("USD");
@@ -180,7 +180,7 @@ export default function Home() {
                 <td>{rowData.amount}</td>
                 <td>{rowData.instrument}</td>
                 <td>
-                  <button>Edit</button>
+                  <button onClick={() => {}}>Edit</button>
                 </td>
               </tr>
             ))}

@@ -13,7 +13,7 @@ const DataForm = ({
   let time =
     today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
   let dateTime = date + " " + time;
-  const [id, setId] = useState(1);
+  const [id, setId] = useState(0);
   const [creationTime, setCreationTime] = useState(dateTime);
   const [changeTime, setchangeTime] = useState(dateTime);
   const [status, setStatus] = useState("active");
@@ -22,7 +22,6 @@ const DataForm = ({
   const [amount, setAmount] = useState(firstAmount);
   const [instrument, setInstrument] = useState(`${fromForm}/${toFrom}`);
 
-  console.log(fromForm);
   const onSubmitCallback = function (e) {
     e.preventDefault();
     onCreate({
