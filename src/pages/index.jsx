@@ -5,7 +5,7 @@ import { HiOutlineChevronUpDown } from "react-icons/hi2";
 import useAxios from "../pages/api/useAxios";
 import axios from "axios";
 import { rowData } from "./api/rawData.js";
-import { env } from "process";
+import DataForm from "../../components/DataForm";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,6 +20,31 @@ export default function Home() {
 
   const [dataC] = useAxios("https://restcountries.com/v3.1/all");
   const dataFilter = dataC.filter((item) => "currencies" in item);
+
+  const onSave = ({
+    id,
+    creationTime,
+    changeTime,
+    status,
+    side,
+    price,
+    amount,
+    instrument,
+  }) => {
+    console.log("saving new data");
+    const newData = tableData.slice(0, tableData.length);
+    newData.push({
+      id,
+      creationTime,
+      changeTime,
+      status,
+      side,
+      price,
+      amount,
+      instrument,
+    });
+    setTableData(newData);
+  };
 
   const dataCountries = dataFilter.map((item) => {
     return (
@@ -54,7 +79,7 @@ export default function Home() {
     if (firstAmount) {
       axios("https://api.freecurrencyapi.com/v1/latest", {
         params: {
-          apikey: process.env.CURRENCY_API_KEY,
+          apikey: process.env.NEXT_PUBLIC_CURRENCY_API_KEY,
           base_currency: fromForm,
           currencies: toForm,
         },
@@ -73,6 +98,7 @@ export default function Home() {
       </div>
       <div className="flex flex-row">
         <input
+          type="number"
           placeholder="Введите количество"
           value={firstAmount}
           onChange={(e) => setFirstAmount(e.target.value)}
@@ -113,15 +139,13 @@ export default function Home() {
           </div>
         </div>
       </div>
-
-      <div className="flex flex-row">
-        <button className="mx-2 inline-flex text-white items-center justify-center rounded-md border  bg-red-500 py-2 px-10 text-sm font-medium shadow-sm  hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-600 ">
-          Sell
-        </button>
-        <button className="mx-2 inline-flex text-white items-center justify-center rounded-md border  bg-green-500 py-2 px-10 text-sm font-medium shadow-sm  hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-600 ">
-          Buy
-        </button>
-      </div>
+      <DataForm
+        onCreate={onSave}
+        fromForm={fromForm}
+        toFrom={toForm}
+        firstAmount={firstAmount}
+        resultCurrency={resultCurrency}
+      />
       <div className="ml-3 flex flex-row gap-1">
         <p className="text-lg">{firstAmount}</p>
         <p className="text-lg">{fromForm}=</p>
@@ -130,7 +154,6 @@ export default function Home() {
         <p className="font-bold text-xl">{resultCurrency * firstAmount}</p>
         <p className="font-bold text-xl">{toForm}</p>
       </div>
-
       <div className="relative overflow-x-auto mt-24 shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left text-gray-500 ">
           <thead>
