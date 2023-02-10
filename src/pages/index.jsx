@@ -5,6 +5,7 @@ import { HiOutlineChevronUpDown } from "react-icons/hi2";
 import useAxios from "../pages/api/useAxios";
 import axios from "axios";
 import { rowData } from "./api/rawData.js";
+import { env } from "process";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -53,7 +54,7 @@ export default function Home() {
     if (firstAmount) {
       axios("https://api.freecurrencyapi.com/v1/latest", {
         params: {
-          apikey: "6RUbhWYPlNbnFdsiEBNDrr2WfJDchjPy8kfR22SS",
+          apikey: process.env.CURRENCY_API_KEY,
           base_currency: fromForm,
           currencies: toForm,
         },
